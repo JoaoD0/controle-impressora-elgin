@@ -1,169 +1,244 @@
-# 🖨️ Controle de Impressora Térmica Elgin
+# 🖨️ Integração Java com Impressora Elgin i9
+### *Controle de Impressora Térmica Elgin*
+---
 
-Trabalho da disciplina de **Lógica de Programação** em Java.
+## 📘 Sobre o Projeto
+
+Este projeto foi desenvolvido por alunos com o objetivo de criar uma aplicação Java capaz de se comunicar com a impressora térmica **Elgin i8/i9**, usando a biblioteca **JNA** e a DLL da Elgin (**E1_Impressora01.dll**).
+O trabalho faz parte da disciplina de **Lógica de Programação**.
+
+Com o programa é possível:
+- Imprimir textos
+- Imprimir QR Code
+- Imprimir código de barras
+- Imprimir cupom fiscal do SAT (arquivo XML)
+- Imprimir cancelamento do SAT (arquivo XML)
+- Abrir a gaveta de dinheiro
+- Fazer a impressora apitar (sinal sonoro)
+- Avançar o papel
 
 ---
 
-## 📘 O que é este programa?
+## 🧰 Tecnologias Utilizadas
 
-É um programa que controla uma **impressora térmica Elgin i8 ou i9** (aquelas
-impressoras de cupom de loja) pelo computador.
-
-Depois de entrar com usuário e senha, aparece um menu de opções. Com ele você pode:
-
-- imprimir um texto;
-- imprimir um QR Code ou um código de barras;
-- imprimir um cupom fiscal do SAT a partir de um arquivo XML;
-- abrir a gaveta de dinheiro;
-- fazer a impressora apitar;
-- avançar o papel.
+- **Java 21 (JDK 21)**
+- **IntelliJ IDEA**
+- **Biblioteca JNA 5.15.0**
+- **DLL da Elgin (E1_Impressora01.dll)**
 
 ---
 
-## ✅ O que você precisa ter
+## 📁 Estrutura do Projeto
 
-- Um computador com **Windows**.
-- A impressora **Elgin i8 ou i9** ligada na tomada e conectada no computador pelo **cabo USB**.
-- Internet, para baixar os programas abaixo (só na primeira vez).
+```
+Main.java             → Código-fonte do programa
+E1_Impressora01.dll   → DLL da Elgin que conversa com a impressora
+libs/jna-5.15.0.jar   → Biblioteca que permite o Java usar a DLL
+XMLSAT.xml            → Exemplo de cupom SAT
+CANC_SAT.xml          → Exemplo de cancelamento SAT
+README.md             → Este arquivo de instruções
+```
 
 ---
 
-## 🪜 Passo a passo
+## ✅ Antes de Começar
 
-### Passo 1 — Baixar o projeto
+Você vai precisar de:
+- Um computador com **Windows**
+- Internet (só para baixar os programas)
+- A impressora **Elgin i8 ou i9**
+- O **cabo USB** da impressora
 
-1. Nesta página do GitHub, clique no botão verde **`<> Code`**.
-2. Clique em **Download ZIP**.
-3. Vá até a pasta **Downloads** do seu computador.
-4. Clique com o botão direito no arquivo baixado e escolha **Extrair Tudo...** → **Extrair**.
-5. Vai aparecer uma pasta nova com os arquivos do projeto. Guarde onde ela está.
+---
 
-### Passo 2 — Instalar o Java (JDK 21)
+## ⚙️ Instalação e Execução
 
-O Java é necessário para o programa funcionar.
+### 🔽 1. Baixar o Projeto do GitHub
+1. Acesse o repositório no GitHub.
+2. Clique no botão verde **<> Code**.
+3. Selecione **Download ZIP**.
+4. Aguarde o download.
 
-1. Acesse **https://adoptium.net/temurin/releases/?version=21**
-2. Baixe a versão para **Windows x64** no formato **.msi**.
-3. Abra o arquivo baixado e clique em **Next** até terminar a instalação.
+### 📦 2. Extrair o Arquivo ZIP
+1. Abra a pasta **Downloads** do seu computador.
+2. Procure o arquivo **controle-impressora-elgin-main.zip**.
+3. Clique com o botão direito nele.
+4. Clique em **Extrair Tudo...** (ou **Extrair aqui** / **Extract All**).
+5. Clique em **Extrair**.
+6. Será criada uma nova pasta com os arquivos do projeto.
 
-### Passo 3 — Instalar o IntelliJ IDEA
+### ☕ 3. Instalar o Java (JDK 21)
+> Se você já tem o Java 21 instalado, pule para a etapa 4.
 
-O IntelliJ é o programa usado para abrir e rodar o projeto.
+1. Abra o navegador.
+2. Acesse: **https://adoptium.net/temurin/releases/?version=21**
+3. Em **Operating System**, escolha **Windows**.
+4. Em **Architecture**, escolha **x64**.
+5. Clique no arquivo terminado em **.msi** para baixar.
+6. Aguarde o download.
+7. Abra o arquivo baixado.
+8. Clique em **Next**.
+9. Aceite os termos e clique em **Next**.
+10. Clique em **Next** de novo.
+11. Clique em **Install**.
+12. Se o Windows perguntar se deseja permitir, clique em **Sim**.
+13. Aguarde a instalação.
+14. Clique em **Finish**.
 
-1. Acesse **https://www.jetbrains.com/idea/download/**
-2. Baixe a versão gratuita (**Community Edition**).
-3. Abra o arquivo baixado e clique em **Next** até terminar a instalação.
+### 💻 4. Instalar o IntelliJ IDEA
+> Se você já tem o IntelliJ instalado, pule para a etapa 5.
 
-### Passo 4 — Abrir o projeto no IntelliJ
+1. Abra o navegador.
+2. Acesse: **https://www.jetbrains.com/idea/download/**
+3. Clique em **Download**.
+4. Aguarde o download.
+5. Abra o arquivo baixado.
+6. Se o Windows perguntar se deseja permitir, clique em **Sim**.
+7. Clique em **Next** em todas as telas.
+8. Clique em **Install**.
+9. Aguarde a instalação.
+10. Clique em **Finish**.
 
+### 🧭 5. Abrir o Projeto no IntelliJ IDEA
 1. Abra o **IntelliJ IDEA**.
-2. Clique em **Open** (ou **File → Open**).
-3. Escolha a pasta do projeto que você extraiu no Passo 1 e clique em **OK**.
-4. Se aparecer a pergunta **"Trust project?"**, clique em **Trust Project**.
+2. Clique em **Open**.
+3. Procure a pasta que você extraiu na etapa 2.
+4. Clique uma vez na pasta para selecionar.
+5. Clique em **OK**.
+6. Se aparecer a pergunta **Trust Project?**, clique em **Trust Project**.
+7. Aguarde o carregamento (aparece uma barrinha no canto de baixo da tela).
 
-### Passo 5 — Escolher o Java no projeto
+### 🛠️ 6. Escolher o Java 21 no Projeto
+1. No menu de cima, clique em **File**.
+2. Clique em **Project Structure...**
+3. Na coluna da esquerda, clique em **Project**.
+4. No campo **SDK**, clique e escolha **21** (o Java instalado na etapa 3).
+5. Clique em **Apply**.
+6. **Não feche a janela ainda**, vamos usá-la na próxima etapa.
 
-1. No menu de cima, clique em **File → Project Structure...**
-2. Na esquerda, clique em **Project**.
-3. No campo **SDK**, escolha o **21** que você instalou no Passo 2.
-4. Clique em **Apply**.
+### 📚 7. Adicionar a Biblioteca JNA
+1. Ainda na janela **Project Structure**, clique em **Libraries** na coluna da esquerda.
+2. Clique no botão **+** (em cima da lista).
+3. Clique em **Java**.
+4. Abra a pasta do projeto.
+5. Abra a pasta **libs**.
+6. Clique no arquivo **jna-5.15.0.jar**.
+7. Clique em **OK**.
+8. Se aparecer uma janela perguntando o módulo, clique em **OK**.
+9. Clique em **Apply**.
+10. Clique em **OK** para fechar a janela.
 
-### Passo 6 — Adicionar a biblioteca JNA
+### 📂 8. Conferir a DLL e a Pasta de Trabalho
+1. Confira se o arquivo **E1_Impressora01.dll** está na pasta principal do projeto, junto com o **Main.java**.
+2. **Não mova esse arquivo de lugar**, senão o programa não encontra a impressora.
+3. No menu de cima, clique em **Run**.
+4. Clique em **Edit Configurations...**
+5. Se a lista estiver vazia, clique no **+** e escolha **Application**. Em **Main class**, digite **Main**.
+6. Procure o campo **Working directory**.
+7. Confira se ele mostra a pasta do projeto. Se não mostrar, clique no ícone de pasta ao lado e escolha a pasta do projeto.
+8. Clique em **OK**.
 
-A biblioteca JNA é o que deixa o Java "conversar" com a impressora.
+### 🔌 9. Ligar a Impressora
+1. Ligue a impressora na tomada.
+2. Conecte o cabo USB na impressora.
+3. Conecte a outra ponta do cabo USB no computador.
+4. Ligue a impressora no botão.
+5. Confira se tem papel dentro da impressora.
 
-1. Ainda na janela **Project Structure**, clique em **Libraries** na esquerda.
-2. Clique no **+** e escolha **Java**.
-3. Entre na pasta **libs** do projeto, escolha o arquivo **`jna-5.15.0.jar`** e clique em **OK**.
-4. Se perguntar a qual módulo adicionar, clique em **OK**.
-5. Clique em **OK** para fechar a janela.
-
-### Passo 7 — Conferir a DLL da impressora
-
-O arquivo **`E1_Impressora01.dll`** precisa estar na **pasta principal do projeto**,
-junto com o `Main.java`. Ele já vem no lugar certo, então **não mova esse arquivo**.
-
-### Passo 8 — Rodar o programa
-
-1. Na lista de arquivos à esquerda, dê dois cliques em **`Main.java`**.
-2. Clique no botão verde ▶️ ao lado de `public class Main` e escolha **Run 'Main.main()'**.
-3. O programa vai aparecer na parte de baixo da tela.
-
-> ⚠️ **Se aparecer erro dizendo que não achou a DLL ou o arquivo XML:**
-> vá em **Run → Edit Configurations...**, procure o campo **Working directory**
-> e escolha a pasta do projeto. Depois clique em **OK** e rode de novo.
+### ▶️ 10. Rodar o Programa
+1. Na coluna da esquerda do IntelliJ, dê dois cliques em **Main.java**.
+2. Clique no botão verde ▶️ que aparece ao lado de **public class Main**.
+3. Clique em **Run 'Main.main()'**.
+4. Aguarde. O programa vai aparecer na parte de baixo da tela.
 
 ---
 
-## 🔑 Passo 9 — Entrar no programa
+## 🔑 Como Fazer o Login
 
-Digite na parte de baixo da tela (e aperte **Enter** depois de cada um):
+1. Clique na parte de baixo da tela, onde o programa apareceu.
+2. Onde aparece **Usuário:**, digite **admin** e aperte **Enter**.
+3. Onde aparece **Senha:**, digite **1234** e aperte **Enter**.
+4. Vai aparecer **Login realizado com sucesso!** e o menu.
 
-| Usuário | Senha |
-|---|---|
-| `admin` | `1234` |
-
-Você tem **3 tentativas**. Se errar as 3, o programa fecha.
+> ⚠️ Você tem **3 tentativas**. Se errar as 3, o programa fecha e você precisa rodar de novo (etapa 10).
 
 ---
 
-## 🖨️ Passo 10 — Usar a impressora
+## 🖨️ Como Usar a Impressora
 
-Sempre que for usar, **faça primeiro a opção 1 e depois a opção 2**:
+### 1. Configurar a conexão (sempre fazer primeiro)
+1. Digite **1** e aperte **Enter**.
+2. Em **Tipo de conexão**, digite **1** e aperte **Enter**.
+3. Em **Modelo da impressora**, digite **i9** (ou **i8**) e aperte **Enter**.
+4. Em **Conexão**, digite **USB** e aperte **Enter**.
+5. Em **Parâmetro**, digite **0** e aperte **Enter**.
 
-1. Digite **1** (Configurar conexão) e responda:
-   - Tipo: **1**
-   - Modelo: **i9** (ou **i8**, conforme a sua impressora)
-   - Conexão: **USB**
-   - Parâmetro: **0**
-2. Digite **2** (Abrir conexão). Deve aparecer **"Conexão aberta com sucesso."**
-3. Agora escolha o que quer fazer, por exemplo **4** para imprimir um texto.
-4. Quando terminar, digite **0** para sair.
+### 2. Abrir a conexão
+1. Digite **2** e aperte **Enter**.
+2. Deve aparecer **Conexão aberta com sucesso.**
 
-### Opções do menu
+### 3. Imprimir um texto (exemplo)
+1. Digite **4** e aperte **Enter**.
+2. Digite o texto que quer imprimir e aperte **Enter**.
+3. Digite quantas cópias quer e aperte **Enter**.
+4. A impressora vai imprimir e cortar o papel.
+
+### 4. Imprimir o cupom SAT (exemplo)
+1. Digite **7** e aperte **Enter**.
+2. Digite **XMLSAT.xml** e aperte **Enter**.
+3. A impressora vai imprimir o cupom.
+
+### 5. Sair do programa
+1. Digite **0** e aperte **Enter**.
+2. A conexão é fechada sozinha e o programa termina.
+
+---
+
+## 📋 Opções do Menu
 
 | Opção | O que faz |
 |---|---|
 | 1 | Configurar conexão |
 | 2 | Abrir conexão |
 | 3 | Fechar conexão |
-| 4 | Imprimir texto (você escolhe o texto e quantas cópias) |
-| 5 | Imprimir QR Code (você escolhe o conteúdo) |
-| 6 | Imprimir código de barras de exemplo |
-| 7 | Imprimir cupom XML SAT (digite `XMLSAT.xml`) |
-| 8 | Imprimir cancelamento XML SAT (digite `CANC_SAT.xml`) |
-| 9 | Abrir gaveta de dinheiro |
-| 10 | Sinal sonoro (você escolhe quantos bips) |
-| 11 | Avançar papel (você escolhe quantas linhas) |
+| 4 | Imprimir texto |
+| 5 | Imprimir QR Code |
+| 6 | Imprimir código de barras |
+| 7 | Imprimir cupom XML SAT (digite **XMLSAT.xml**) |
+| 8 | Imprimir cancelamento XML SAT (digite **CANC_SAT.xml**) |
+| 9 | Abrir gaveta |
+| 10 | Sinal sonoro |
+| 11 | Avançar papel |
 | 0 | Sair |
 
 ---
 
-## ❓ Problemas comuns
+## ❓ Problemas Comuns
 
-| O que aparece | O que fazer |
-|---|---|
-| `Conexão fechada. Abra a conexão antes (opção 2).` | Faça a opção 1 e depois a opção 2. |
-| `Configure a conexão antes (opção 1).` | Faça a opção 1 primeiro. |
-| `Erro ao abrir conexão. Código de erro: ...` | Confira se a impressora está ligada e com o cabo USB conectado. Confira também se digitou `i9`/`i8` e `USB` corretamente na opção 1. |
-| `Não foi possível ler o arquivo` | Confira se digitou o nome do arquivo certo, com `.xml` no final (ex: `XMLSAT.xml`). |
-| `Valor inválido! Digite apenas números.` | Digite só números, sem letras ou espaços. |
+- **Apareceu "Conexão fechada. Abra a conexão antes (opção 2)."**
+  → Faça a opção **1** e depois a opção **2**.
 
----
+- **Apareceu "Configure a conexão antes (opção 1)."**
+  → Faça a opção **1** primeiro.
 
-## 📁 Arquivos do projeto
+- **Apareceu "Erro ao abrir conexão. Código de erro: ..."**
+  → Confira se a impressora está ligada e com o cabo USB conectado.
+  → Faça a opção **1** de novo e confira se digitou **i9** e **USB** certinho.
 
-| Arquivo | Para que serve |
-|---|---|
-| `Main.java` | O código do programa |
-| `E1_Impressora01.dll` | Arquivo da Elgin que conversa com a impressora |
-| `libs/jna-5.15.0.jar` | Biblioteca que permite o Java usar a DLL |
-| `XMLSAT.xml` | Exemplo de cupom SAT (opção 7) |
-| `CANC_SAT.xml` | Exemplo de cancelamento SAT (opção 8) |
+- **Apareceu "Não foi possível ler o arquivo"**
+  → Confira se digitou o nome certo, com **.xml** no final (ex: **XMLSAT.xml**).
+  → Confira o **Working directory** (etapa 8).
+
+- **Apareceu "Valor inválido! Digite apenas números."**
+  → Digite só números, sem letras e sem espaço.
+
+- **Apareceu erro em vermelho falando de "com.sun.jna"**
+  → A biblioteca JNA não foi adicionada. Faça a etapa 7 de novo.
 
 ---
 
 ## 👥 Autores
+*(em ordem alfabética)*
 
 - João Vitor Delfino
 - Nathan Feitosa
