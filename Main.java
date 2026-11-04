@@ -131,13 +131,35 @@ public class Main {
         return false;
     }
 
-    // Função para configurar conexão
-    public static void configurarConexao() {
+    // ===================== CONEXÃO =====================
 
+    // Função para configurar conexão: pergunta os dados e guarda nas variáveis estáticas
+    public static void configurarConexao() {
+        System.out.println("\n--- Configurar conexão ---");
+
+        tipo = lerInteiro("Tipo de conexão (1 = USB): ");
+        modelo = capturarEntrada("Modelo da impressora (ex: i9): ");
+        conexao = capturarEntrada("Conexão (ex: USB): ");
+        parametro = lerInteiro("Parâmetro (ex: 0): ");
+
+        System.out.println("Configuração salva: tipo=" + tipo + ", modelo=" + modelo
+                + ", conexao=" + conexao + ", parametro=" + parametro);
+
+        // Se já existe uma conexão aberta, a nova configuração só vale depois de reabrir
+        if (conexaoAberta) {
+            System.out.println("Atenção: a conexão já está aberta. Feche e abra de novo para usar a nova configuração.");
+        }
     }
 
     public static void abrirConexao() {
         // Função para abrir a conexão com a impressora
+
+        // Sem configuração não dá para abrir (o modelo ainda estaria vazio)
+        if (modelo == null) {
+            System.out.println("Configure a conexão antes (opção 1).");
+            return;
+        }
+
         if (!conexaoAberta) {
             int retorno = ImpressoraDLL.INSTANCE.AbreConexaoImpressora(tipo, modelo, conexao, parametro);
             if (retorno == 0) {
@@ -151,8 +173,22 @@ public class Main {
         }
     }
 
+    // Função para fechar a conexão com a impressora
     public static void fecharConexao() {
+        // Se já está fechada, só avisa
+        if (!conexaoAberta) {
+            System.out.println("A conexão já está fechada.");
+            return;
+        }
 
+        int retorno = ImpressoraDLL.INSTANCE.FechaConexaoImpressora();
+
+        if (retorno == 0) {
+            conexaoAberta = false;
+            System.out.println("Conexão fechada com sucesso.");
+        } else {
+            System.out.println("Erro ao fechar conexão. Código de erro: " + retorno);
+        }
     }
 
 
