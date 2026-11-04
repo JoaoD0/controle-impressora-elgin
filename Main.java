@@ -55,9 +55,16 @@ public class Main {
     private static final String USUARIO = "admin";
     private static final String SENHA = "1234";
 
-    // Assinatura do QR Code usada na impressão do cancelamento do SAT
-    // TODO: pedir ao professor o valor correto
-    private static final String ASS_QRCODE = "ASSINATURA_QRCODE_PROVISORIA";
+    // Assinatura do QR Code usada na impressão do cancelamento do SAT.
+    // Valor copiado da tag <assinaturaQRCODE> do arquivo CANC_SAT.xml.
+    // (O texto é longo, então foi dividido em partes juntadas com +)
+    private static final String ASS_QRCODE =
+            "Q5DLkpdRijIRGY6YSSNsTWK1TztHL1vD0V1Jc4spo/CEUqICEb9SFy82ym8EhBRZ"
+            + "jbh3btsZhF+sjHqEMR159i4agru9x6KsepK/q0E2e5xlU5cv3m1woYfgHyOkWDNc"
+            + "SdMsS6bBh2Bpq6s89yJ9Q6qh/J8YHi306ce9Tqb/drKvN2XdE5noRSS32TAWuaQE"
+            + "Vd7u+TrvXlOQsE3fHR1D5f1saUwQLPSdIv01NF6Ny7jZwjCwv1uNDgGZONJdlTJ6"
+            + "p0ccqnZvuE70aHOI09elpjEO6Cd+orI7XHHrFCwhFhAcbalc+ZfO5b/+vkyAHS6C"
+            + "YVFCDtYR9Hi5qgdk31v23w==";
 
     // ===================== VARIÁVEIS DO PROGRAMA =====================
 
