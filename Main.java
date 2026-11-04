@@ -345,6 +345,72 @@ public class Main {
         }
     }
 
+    // ===================== OUTROS COMANDOS =====================
+
+    // Abre a gaveta de dinheiro ligada à impressora
+    public static void abrirGaveta() {
+        if (!conexaoAberta) {
+            System.out.println("Conexão fechada. Abra a conexão antes (opção 2).");
+            return;
+        }
+
+        // Parâmetros: pino 1, tempo inicial 5, tempo final 10
+        int retorno = ImpressoraDLL.INSTANCE.AbreGaveta(1, 5, 10);
+
+        if (retorno == 0) {
+            System.out.println("Gaveta aberta com sucesso.");
+        } else {
+            System.out.println("Erro ao abrir a gaveta. Código de erro: " + retorno);
+        }
+    }
+
+    // Faz a impressora apitar a quantidade de vezes que o usuário escolher
+    public static void sinalSonoro() {
+        if (!conexaoAberta) {
+            System.out.println("Conexão fechada. Abra a conexão antes (opção 2).");
+            return;
+        }
+
+        int quantidade = lerInteiro("Quantos bips? ");
+
+        if (quantidade <= 0) {
+            System.out.println("A quantidade de bips deve ser maior que zero.");
+            return;
+        }
+
+        // Parâmetros: quantidade de bips, tempo inicial 50, tempo final 5
+        int retorno = ImpressoraDLL.INSTANCE.SinalSonoro(quantidade, 50, 5);
+
+        if (retorno == 0) {
+            System.out.println("Sinal sonoro emitido com sucesso.");
+        } else {
+            System.out.println("Erro ao emitir sinal sonoro. Código de erro: " + retorno);
+        }
+    }
+
+    // Avança o papel a quantidade de linhas que o usuário escolher
+    public static void avancarPapel() {
+        if (!conexaoAberta) {
+            System.out.println("Conexão fechada. Abra a conexão antes (opção 2).");
+            return;
+        }
+
+        int linhas = lerInteiro("Quantas linhas avançar? ");
+
+        if (linhas <= 0) {
+            System.out.println("A quantidade de linhas deve ser maior que zero.");
+            return;
+        }
+
+        int retorno = ImpressoraDLL.INSTANCE.AvancaPapel(linhas);
+
+        if (retorno == 0) {
+            System.out.println("Papel avançado com sucesso.");
+        } else {
+            System.out.println("Erro ao avançar o papel. Código de erro: " + retorno);
+        }
+    }
+
 
 
     // ===================== MENU =====================
@@ -410,6 +476,12 @@ public class Main {
                 imprimirXMLSAT();
             } else if (opcao == 8) {
                 imprimirXMLCancelamentoSAT();
+            } else if (opcao == 9) {
+                abrirGaveta();
+            } else if (opcao == 10) {
+                sinalSonoro();
+            } else if (opcao == 11) {
+                avancarPapel();
             } else if (opcao == 0) {
                 // Antes de sair, fecha a conexão se ela estiver aberta
                 if (conexaoAberta) {
