@@ -1,80 +1,78 @@
-# 🖨️ Integração Java com Impressora Elgin i9
-### *(Coloque aqui o nome do seu projeto)*
----
+# 🖨️ Projeto Cuiabano — Controle de Impressora Térmica Elgin
 
-## 📘 Sobre o Projeto
-
-Este projeto foi desenvolvido por alunos com o objetivo de criar uma aplicação Java capaz de se comunicar com a impressora **Elgin i9**, utilizando comandos **ESC/POS**, testes de impressão e interação via porta de comunicação.  
-O trabalho faz parte da disciplina de **Programação Orientada a Objetos**.
+Trabalho da disciplina de **Lógica de Programação** em Java.
 
 ---
 
-## 🧰 Tecnologias Utilizadas
+## 📘 O que o programa faz
 
-- **Java 17**
-- **IntelliJ IDEA**
-- **Biblioteca ESC/POS**
-- **Driver/SDK da Elgin i9**
-- *(Opcional)* Maven ou Gradle
+É um programa de terminal que controla uma impressora térmica **Elgin i8/i9**
+usando a biblioteca **JNA** e a DLL da Elgin (`E1_Impressora01.dll`).
 
----
-
-## 📁 Estrutura do Projeto
-
-/src → Código-fonte principal
-/lib → Bibliotecas e dependências externas
-/docs → Materiais adicionais e documentação
-/examples → Testes e arquivos de demonstração
-
+Depois de fazer login, o usuário usa um menu para configurar e abrir a conexão
+com a impressora, imprimir textos, QR Codes, códigos de barras e cupons do SAT
+(a partir de arquivos XML), abrir a gaveta de dinheiro, emitir bips e avançar o papel.
 
 ---
 
-## ⚙️ Instalação e Execução
+## 📁 Arquivos do projeto
 
-### 🔽 1. Baixar o Projeto do GitHub
-1. Acesse o repositório.
-2. Clique no botão **Code**.
-3. Selecione **Download ZIP**.
-4. Aguarde o download.
-
-### 📦 2. Extrair o Arquivo ZIP
-1. Vá até o local onde o arquivo foi salvo.
-2. Clique com o botão direito → **Extrair aqui** / **Extract All**.
-3. Será criada uma nova pasta com os arquivos.
-
-### 🧭 3. Importar no IntelliJ IDEA
-1. Abra o **IntelliJ IDEA**.
-2. Clique em **Open**.
-3. Escolha a pasta extraída.
-4. Aguarde o carregamento.
-5. Caso apareça, clique em **Import Project** (Maven/Gradle).
-6. Verifique o SDK em:
-   - *File → Project Structure → Project SDK → Java 17*
-7. Abra o arquivo `Main.java` e clique em ▶️ **Run**.
+| Arquivo | Para que serve |
+|---|---|
+| `Main.java` | Código-fonte do programa |
+| `E1_Impressora01.dll` | DLL da Elgin que conversa com a impressora |
+| `libs/jna-5.15.0.jar` | Biblioteca JNA, que permite o Java usar a DLL |
+| `XMLSAT.xml` | Exemplo de cupom SAT (opção 7) |
+| `CANC_SAT.xml` | Exemplo de cancelamento SAT (opção 8) |
 
 ---
 
-## 🧪 Testes
+## ⚙️ Como executar (IntelliJ IDEA)
 
-- Teste de conexão com a impressora
-- Impressão de texto simples
-- Envio de comandos **ESC/POS**
-- Verificação das portas de comunicação
-- Teste com várias mensagens
-
----
-
-## 📚 Documentação Adicional
-
-- Manual da Impressora **Elgin i9**
-- Documentação do **SDK Elgin**
-- Referência **ESC/POS**
+1. Instale o **JDK 21**.
+2. Abra a pasta do projeto no IntelliJ (**File → Open**).
+3. Confira o JDK em **File → Project Structure → Project → SDK → 21**.
+4. Adicione a biblioteca JNA:
+   **File → Project Structure → Libraries → + → Java** e escolha `libs/jna-5.15.0.jar`.
+5. Deixe o arquivo `E1_Impressora01.dll` na **raiz do projeto** (mesma pasta do `Main.java`).
+6. Em **Run → Edit Configurations...**, deixe o **Working directory** como a pasta do projeto.
+   Isso é necessário para o programa achar a DLL e os arquivos XML.
+7. Conecte a impressora no USB, abra o `Main.java` e clique em ▶️ **Run**.
 
 ---
 
-## 👥 Autores  
-*(em ordem alfabética)*
+## 🔑 Login de teste
 
-- Ana Beatriz Souza
-- Carlos Henrique Pereira
-- Marcos Vinicius Almeida
+| Usuário | Senha |
+|---|---|
+| `admin` | `1234` |
+
+São permitidas 3 tentativas. Depois disso, o programa é encerrado.
+
+---
+
+## 📋 Opções do menu
+
+| Opção | O que faz |
+|---|---|
+| 1 | Configurar conexão (tipo `1` = USB, modelo `i9`, conexão `USB`, parâmetro `0`) |
+| 2 | Abrir conexão |
+| 3 | Fechar conexão |
+| 4 | Imprimir texto (com número de cópias) |
+| 5 | Imprimir QR Code |
+| 6 | Imprimir código de barras |
+| 7 | Imprimir cupom XML SAT (ex: `XMLSAT.xml`) |
+| 8 | Imprimir cancelamento XML SAT (ex: `CANC_SAT.xml`) |
+| 9 | Abrir gaveta |
+| 10 | Sinal sonoro |
+| 11 | Avançar papel |
+| 0 | Sair (fecha a conexão se estiver aberta) |
+
+Ordem de uso: **1 → 2** e depois qualquer comando de 4 a 11.
+As opções 4 a 11 só funcionam com a conexão aberta.
+
+---
+
+## 👥 Autores
+
+Autores: preencher
