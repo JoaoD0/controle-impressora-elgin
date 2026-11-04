@@ -55,6 +55,10 @@ public class Main {
     private static final String USUARIO = "admin";
     private static final String SENHA = "1234";
 
+    // Assinatura do QR Code usada na impressão do cancelamento do SAT
+    // TODO: pedir ao professor o valor correto
+    private static final String ASS_QRCODE = "ASSINATURA_QRCODE_PROVISORIA";
+
     // ===================== VARIÁVEIS DO PROGRAMA =====================
 
     // Guarda se a conexão com a impressora está aberta (true) ou fechada (false)
@@ -99,6 +103,18 @@ public class Main {
             }
 
             System.out.println("Valor inválido! Digite apenas números.");
+        }
+    }
+
+    // Lê um arquivo de texto (ex: XMLSAT.xml) e devolve todo o conteúdo.
+    // Se o arquivo não existir ou não puder ser lido, devolve null.
+    public static String lerArquivo(String nome) {
+        // O Java obriga a usar try/catch ao ler arquivos, porque a leitura pode falhar.
+        // Se falhar, o programa cai no catch e devolvemos null.
+        try {
+            return Files.readString(Paths.get(nome));
+        } catch (Exception erro) {
+            return null;
         }
     }
 
@@ -191,6 +207,144 @@ public class Main {
         }
     }
 
+    // ===================== IMPRESSÃO =====================
+
+    // Corta o papel depois de uma impressão (avança 5 linhas antes de cortar)
+    public static void cortarPapel() {
+        int retorno = ImpressoraDLL.INSTANCE.Corte(5);
+        if (retorno != 0) {
+            System.out.println("Erro ao cortar o papel. Código de erro: " + retorno);
+        }
+    }
+
+    // Imprime um texto digitado pelo usuário, quantas vezes ele quiser
+    public static void imprimirTexto() {
+        // a) Só continua se a conexão estiver aberta
+        if (!conexaoAberta) {
+            System.out.println("Conexão fechada. Abra a conexão antes (opção 2).");
+            return;
+        }
+
+        // b) Pergunta o texto e o número de cópias
+        String texto = capturarEntrada("Digite o texto a imprimir: ");
+        int copias = lerInteiro("Quantas cópias? ");
+
+        if (copias <= 0) {
+            System.out.println("O número de cópias deve ser maior que zero.");
+            return;
+        }
+
+        // c) Imprime uma cópia por vez e conta quantas deram certo
+        int copiasImpressas = 0;
+        for (int i = 1; i <= copias; i++) {
+            // O "\n" no final faz cada cópia sair em uma linha separada
+            // Parâmetros: posição 1 (centralizado), estilo 4, tamanho 0 (normal)
+            int retorno = ImpressoraDLL.INSTANCE.ImpressaoTexto(texto + "\n", 1, 4, 0);
+
+            // d) ATENÇÃO: no ImpressaoTexto, sucesso é retorno >= 0 (erro só se for < 0)
+            if (retorno < 0) {
+                System.out.println("Erro ao imprimir a cópia " + i + ". Código de erro: " + retorno);
+                break; // para de imprimir se deu erro
+            }
+            copiasImpressas++;
+        }
+
+        // e) Se imprimiu alguma coisa, corta o papel
+        if (copiasImpressas > 0) {
+            System.out.println("Texto impresso com sucesso (" + copiasImpressas + " cópia(s)).");
+            cortarPapel();
+        }
+    }
+
+    // Imprime um QR Code com os dados que o usuário digitar
+    public static void imprimirQRCode() {
+        if (!conexaoAberta) {
+            System.out.println("Conexão fechada. Abra a conexão antes (opção 2).");
+            return;
+        }
+
+        String dados = capturarEntrada("Digite o conteúdo do QR Code: ");
+
+        // Parâmetros: tamanho 6, nível de correção 4
+        int retorno = ImpressoraDLL.INSTANCE.ImpressaoQRCode(dados, 6, 4);
+
+        if (retorno == 0) {
+            System.out.println("QR Code impresso com sucesso.");
+            cortarPapel();
+        } else {
+            System.out.println("Erro ao imprimir QR Code. Código de erro: " + retorno);
+        }
+    }
+
+    // Imprime um código de barras de exemplo (CODE128)
+    public static void imprimirCodigoBarras() {
+        if (!conexaoAberta) {
+            System.out.println("Conexão fechada. Abra a conexão antes (opção 2).");
+            return;
+        }
+
+        // Parâmetros: tipo 8 (CODE128), dados, altura 100, largura 2, HRI 3 (posição do número legível)
+        int retorno = ImpressoraDLL.INSTANCE.ImpressaoCodigoBarras(8, "{A012345678912", 100, 2, 3);
+
+        if (retorno == 0) {
+            System.out.println("Código de barras impresso com sucesso.");
+            cortarPapel();
+        } else {
+            System.out.println("Erro ao imprimir código de barras. Código de erro: " + retorno);
+        }
+    }
+
+    // Imprime um cupom fiscal a partir de um arquivo XML do SAT
+    public static void imprimirXMLSAT() {
+        if (!conexaoAberta) {
+            System.out.println("Conexão fechada. Abra a conexão antes (opção 2).");
+            return;
+        }
+
+        String nomeArquivo = capturarEntrada("Nome do arquivo XML (ex: XMLSAT.xml): ");
+        String xml = lerArquivo(nomeArquivo);
+
+        // Se não conseguiu ler o arquivo, sai do método
+        if (xml == null) {
+            System.out.println("Não foi possível ler o arquivo");
+            return;
+        }
+
+        int retorno = ImpressoraDLL.INSTANCE.ImprimeXMLSAT(xml, 0);
+
+        if (retorno == 0) {
+            System.out.println("Cupom XML SAT impresso com sucesso.");
+            cortarPapel();
+        } else {
+            System.out.println("Erro ao imprimir XML SAT. Código de erro: " + retorno);
+        }
+    }
+
+    // Imprime o cupom de cancelamento a partir de um arquivo XML do SAT
+    public static void imprimirXMLCancelamentoSAT() {
+        if (!conexaoAberta) {
+            System.out.println("Conexão fechada. Abra a conexão antes (opção 2).");
+            return;
+        }
+
+        String nomeArquivo = capturarEntrada("Nome do arquivo XML (ex: CANC_SAT.xml): ");
+        String xml = lerArquivo(nomeArquivo);
+
+        if (xml == null) {
+            System.out.println("Não foi possível ler o arquivo");
+            return;
+        }
+
+        int retorno = ImpressoraDLL.INSTANCE.ImprimeXMLCancelamentoSAT(xml, ASS_QRCODE, 0);
+
+        if (retorno == 0) {
+            System.out.println("Cancelamento XML SAT impresso com sucesso.");
+            cortarPapel();
+        } else {
+            System.out.println("Erro ao imprimir cancelamento XML SAT. Código de erro: " + retorno);
+        }
+    }
+
 
 
     // ===================== MENU =====================
@@ -246,6 +400,16 @@ public class Main {
                 abrirConexao();
             } else if (opcao == 3) {
                 fecharConexao();
+            } else if (opcao == 4) {
+                imprimirTexto();
+            } else if (opcao == 5) {
+                imprimirQRCode();
+            } else if (opcao == 6) {
+                imprimirCodigoBarras();
+            } else if (opcao == 7) {
+                imprimirXMLSAT();
+            } else if (opcao == 8) {
+                imprimirXMLCancelamentoSAT();
             } else if (opcao == 0) {
                 // Antes de sair, fecha a conexão se ela estiver aberta
                 if (conexaoAberta) {
